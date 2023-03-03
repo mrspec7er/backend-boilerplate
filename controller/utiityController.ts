@@ -144,6 +144,7 @@ export const uploadMultipleFile = async (
 };
 
 export const payment = async (req: express.Request, res: express.Response) => {
+  const { order_id, gross_amount } = req.body;
   try {
     // Create Snap API instance
     const snap = new midtransClient.Snap({
@@ -154,8 +155,8 @@ export const payment = async (req: express.Request, res: express.Response) => {
 
     const parameter = {
       transaction_details: {
-        order_id: "test-transaction-123",
-        gross_amount: 200000,
+        order_id,
+        gross_amount,
       },
       credit_card: {
         secure: true,
