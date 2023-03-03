@@ -198,8 +198,8 @@ export const paymentNotification = async (
     //     data: response,
     //   });
     // });
-    const accessToken = req.headers.authorization?.split(" ")[1];
-    console.log("Notification", req.headers.authorization);
+    console.log("Notification", req.headers);
+    console.log("Body", req.body);
     res.end();
   } catch (err: any) {
     console.log(err);
@@ -211,11 +211,14 @@ export const paymentSuccess = async (
   req: express.Request,
   res: express.Response
 ) => {
+  const { auth } = req.body;
   try {
     // Create Snap API instance
 
-    console.log("PaymentSuccess", req.body);
-    res.end();
+    // const decode = btoa(auth);
+    // res.send(decode);
+    console.log("Notification Payment", req.headers);
+    console.log("Body Payment", req.body);
   } catch (err: any) {
     console.log(err);
     res.end();
