@@ -185,23 +185,23 @@ export const paymentNotification = async (
 ) => {
   try {
     // Create Snap API instance
-    const snap = new midtransClient.Snap({
-      isProduction: false,
-      serverKey: "SB-Mid-server-BLnzptd6JNNIcrOG2PY45GR8",
-      clientKey: "SB-Mid-client-rHzHHHflyG4fUZEZ",
-    });
+    // const snap = new midtransClient.Snap({
+    //   isProduction: false,
+    //   serverKey: "SB-Mid-server-BLnzptd6JNNIcrOG2PY45GR8",
+    //   clientKey: "SB-Mid-client-rHzHHHflyG4fUZEZ",
+    // });
 
-    snap.transaction.notification().then((response: any) => {
-      return res.status(201).send({
-        status: true,
-        data: response,
-      });
-    });
+    // snap.transaction.notification().then((response: any) => {
+    //   return res.status(201).send({
+    //     status: true,
+    //     data: response,
+    //   });
+    // });
+    console.log("Notification", req.body);
+    res.end();
   } catch (err: any) {
-    return res.status(500).send({
-      status: false,
-      message: err.message,
-    });
+    console.log(err);
+    res.end();
   }
 };
 
@@ -212,14 +212,10 @@ export const paymentSuccess = async (
   try {
     // Create Snap API instance
 
-    return res.status(201).send({
-      status: true,
-      message: req.body,
-    });
+    console.log("PaymentSuccess", req.body);
+    res.end();
   } catch (err: any) {
-    return res.status(500).send({
-      status: false,
-      message: err.message,
-    });
+    console.log(err);
+    res.end();
   }
 };
