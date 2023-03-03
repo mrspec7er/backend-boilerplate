@@ -6,6 +6,13 @@ const midtransClient = require("midtrans-client");
 
 const prisma = new PrismaClient();
 
+export const index = async (req: express.Request, res: express.Response) => {
+  return res.status(200).send({
+    status: true,
+    message: "Hello World!",
+  });
+};
+
 export const sendEmaiil = async (
   req: express.Request,
   res: express.Response

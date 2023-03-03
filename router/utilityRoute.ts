@@ -6,12 +6,14 @@ import {
   payment,
   paymentNotification,
   paymentSuccess,
+  index,
 } from "../controller/utiityController";
 import { verifyUserToken } from "../middleware/verifyToken";
 import upload from "../middleware/fileInput";
 
 const router = express.Router();
 
+router.get("/", index);
 router.post("/send-email", sendEmaiil);
 router.post("/payment", verifyUserToken, payment);
 router.post("/payment/notification", paymentNotification);
