@@ -198,7 +198,8 @@ export const paymentNotification = async (
     //     data: response,
     //   });
     // });
-    console.log("Notification", req.body);
+    const accessToken = req.headers.authorization?.split(" ")[1];
+    console.log("Notification", req.headers.authorization);
     res.end();
   } catch (err: any) {
     console.log(err);
