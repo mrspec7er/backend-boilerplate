@@ -193,7 +193,14 @@ export const paymentNotification = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const { order_id, status_code, gross_amount, signature_key } = req.body;
+  const {
+    order_id,
+    status_code,
+    gross_amount,
+    signature_key,
+    transaction_status,
+    fraud_status,
+  } = req.body;
   try {
     const createSignature = crypto
       .createHash("sha512")
@@ -201,6 +208,29 @@ export const paymentNotification = async (
       .digest("hex");
 
     if (createSignature === signature_key) {
+      if (
+        (transaction_status === "settlement" ||
+          transaction_status === "capture") &&
+        fraud_status === "accept"
+      ) {
+        console.log(
+          "ORDER ID: " +
+            order_id +
+            " SUCCESS, STATUS ORDER CHANGE TO PAID, SEND EMAIL TO USER AND ADMIN"
+        );
+        res.end();
+      } else if (
+        (transaction_status === "pending" ||
+          transaction_status === "authorize") &&
+        fraud_status === "accept"
+      ) {
+        console.log(
+          "ORDER ID: " +
+            order_id +
+            " SUCCESS TO CREATED, SEND EMAIL TO USER FOR PAYMENT DETAIL"
+        );
+        res.end();
+      }
       console.log(
         "NOTIFICATION WITH ORDER ID: " + order_id + " SUCCESS TO SENT"
       );
@@ -215,26 +245,13 @@ export const paymentNotification = async (
   }
 };
 
-export const paymentSuccess = async (
+export const paymentSuccessRedirect = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const { order_id, status_code, gross_amount, signature_key } = req.body;
-  console.log("PAYMENT", req.body);
-
   try {
-    const createSignature = crypto
-      .createHash("sha512")
-      .update(order_id + status_code + gross_amount + SERVER_KEY)
-      .digest("hex");
-
-    if (createSignature === signature_key) {
-      console.log("PAYMENT WITH ORDER ID: " + order_id + " SUCCESS");
-      res.end();
-    } else {
-      console.log("ORDER ID: " + order_id + "UNAUTHORIZE");
-      res.end();
-    }
+    console.log(req.query);
+    res.end;
   } catch (err: any) {
     console.log(err);
     res.end();

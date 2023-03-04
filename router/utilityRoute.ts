@@ -5,7 +5,7 @@ import {
   uploadMultipleFile,
   payment,
   paymentNotification,
-  paymentSuccess,
+  paymentSuccessRedirect,
   index,
 } from "../controller/utiityController";
 import { verifyUserToken } from "../middleware/verifyToken";
@@ -17,7 +17,7 @@ router.get("/", index);
 router.post("/send-email", sendEmaiil);
 router.post("/payment", verifyUserToken, payment);
 router.post("/payment/notification", paymentNotification);
-router.post("/payment/success", paymentSuccess);
+router.get("/payment/success", paymentSuccessRedirect);
 router.post(
   "/upload-profile",
   verifyUserToken,
