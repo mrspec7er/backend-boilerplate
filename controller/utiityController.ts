@@ -6,8 +6,9 @@ import crypto from "crypto";
 const midtransClient = require("midtrans-client");
 
 const prisma = new PrismaClient();
-const SERVER_KEY = "SB-Mid-server-BLnzptd6JNNIcrOG2PY45GR8";
-const CLIENT_KEY = "SB-Mid-client-rHzHHHflyG4fUZEZ";
+process.env.PORT;
+const SERVER_KEY = process.env.SERVER_KEY;
+const CLIENT_KEY = process.env.CLIENT_KEY;
 
 export const index = async (req: express.Request, res: express.Response) => {
   return res.status(200).send({
@@ -207,8 +208,6 @@ export const paymentNotification = async (
       .digest("hex");
 
     if (createSignature === signature_key) {
-      console.log(req.body);
-
       if (
         (transaction_status === "settlement" ||
           transaction_status === "capture") &&

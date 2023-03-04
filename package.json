@@ -1,7 +1,7 @@
 {
-  "name": "express-prisma",
+  "name": "express-prisma-midtrans",
   "version": "1.0.0",
-  "description": "",
+  "description": "Boilerplate for creating backend with typescript, prisma, express, node-mailer and midtrans",
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon",
