@@ -205,10 +205,10 @@ export const paymentNotification = async (
         "NOTIFICATION WITH ORDER ID: " + order_id + " SUCCESS TO SENT"
       );
       res.end();
+    } else {
+      console.log("ORDER ID: " + order_id + " UNAUTHORIZE");
+      res.end();
     }
-
-    console.log("NOTIFICATION WITH ORDER ID: " + order_id + " UNAUTHORIZE");
-    res.end();
   } catch (err: any) {
     console.log(err);
     res.end();
@@ -220,6 +220,8 @@ export const paymentSuccess = async (
   res: express.Response
 ) => {
   const { order_id, status_code, gross_amount, signature_key } = req.body;
+  console.log("PAYMENT", req.body);
+
   try {
     const createSignature = crypto
       .createHash("sha512")
@@ -229,10 +231,10 @@ export const paymentSuccess = async (
     if (createSignature === signature_key) {
       console.log("PAYMENT WITH ORDER ID: " + order_id + " SUCCESS");
       res.end();
+    } else {
+      console.log("ORDER ID: " + order_id + "UNAUTHORIZE");
+      res.end();
     }
-
-    console.log("ORDER ID: " + order_id + "UNAUTHORIZE");
-    res.end();
   } catch (err: any) {
     console.log(err);
     res.end();
