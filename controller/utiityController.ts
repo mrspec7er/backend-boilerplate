@@ -175,7 +175,6 @@ export const payment = async (req: express.Request, res: express.Response) => {
     snap.createTransaction(parameter).then((transaction: any) => {
       // transaction redirect_url
       const redirectUrl = transaction.redirect_url;
-      console.log("redirectUrl:", redirectUrl);
       return res.status(201).send({
         status: true,
         message: redirectUrl,
@@ -208,6 +207,8 @@ export const paymentNotification = async (
       .digest("hex");
 
     if (createSignature === signature_key) {
+      console.log(req.body);
+
       if (
         (transaction_status === "settlement" ||
           transaction_status === "capture") &&
@@ -231,9 +232,6 @@ export const paymentNotification = async (
         );
         res.end();
       }
-      console.log(
-        "NOTIFICATION WITH ORDER ID: " + order_id + " SUCCESS TO SENT"
-      );
       res.end();
     } else {
       console.log("ORDER ID: " + order_id + " UNAUTHORIZE");
@@ -250,7 +248,7 @@ export const paymentSuccessRedirect = async (
   res: express.Response
 ) => {
   try {
-    console.log(req.query);
+    console.log("Data: ", req.query);
     res.end;
   } catch (err: any) {
     console.log(err);
