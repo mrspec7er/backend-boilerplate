@@ -2,9 +2,12 @@ import express from "express";
 import sendEmail from "../utils/sendEmail";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
+import crypto from "crypto";
 const midtransClient = require("midtrans-client");
 
 const prisma = new PrismaClient();
+const SERVER_KEY = "SB-Mid-server-BLnzptd6JNNIcrOG2PY45GR8";
+const CLIENT_KEY = "SB-Mid-client-rHzHHHflyG4fUZEZ";
 
 export const index = async (req: express.Request, res: express.Response) => {
   return res.status(200).send({
@@ -144,19 +147,25 @@ export const uploadMultipleFile = async (
 };
 
 export const payment = async (req: express.Request, res: express.Response) => {
-  const { order_id, gross_amount } = req.body;
+  const { order_id, gross_amount, email } = req.body;
   try {
     // Create Snap API instance
     const snap = new midtransClient.Snap({
       isProduction: false,
-      serverKey: "SB-Mid-server-BLnzptd6JNNIcrOG2PY45GR8",
-      clientKey: "SB-Mid-client-rHzHHHflyG4fUZEZ",
+      serverKey: SERVER_KEY,
+      clientKey: CLIENT_KEY,
     });
 
     const parameter = {
       transaction_details: {
         order_id,
         gross_amount,
+      },
+      customer_details: {
+        email: email,
+        first_name: "Miracle",
+        last_name: "Boy",
+        phone: "+6281 1234 1234",
       },
       credit_card: {
         secure: true,
@@ -184,22 +193,21 @@ export const paymentNotification = async (
   req: express.Request,
   res: express.Response
 ) => {
+  const { order_id, status_code, gross_amount, signature_key } = req.body;
   try {
-    // Create Snap API instance
-    // const snap = new midtransClient.Snap({
-    //   isProduction: false,
-    //   serverKey: "SB-Mid-server-BLnzptd6JNNIcrOG2PY45GR8",
-    //   clientKey: "SB-Mid-client-rHzHHHflyG4fUZEZ",
-    // });
+    const createSignature = crypto
+      .createHash("sha512")
+      .update(order_id + status_code + gross_amount + SERVER_KEY)
+      .digest("hex");
 
-    // snap.transaction.notification().then((response: any) => {
-    //   return res.status(201).send({
-    //     status: true,
-    //     data: response,
-    //   });
-    // });
-    console.log("Notification", req.headers);
-    console.log("Body", req.body);
+    if (createSignature === signature_key) {
+      console.log(
+        "NOTIFICATION WITH ORDER ID: " + order_id + " SUCCESS TO SENT"
+      );
+      res.end();
+    }
+
+    console.log("NOTIFICATION WITH ORDER ID: " + order_id + " UNAUTHORIZE");
     res.end();
   } catch (err: any) {
     console.log(err);
@@ -211,14 +219,20 @@ export const paymentSuccess = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const { auth } = req.body;
+  const { order_id, status_code, gross_amount, signature_key } = req.body;
   try {
-    // Create Snap API instance
+    const createSignature = crypto
+      .createHash("sha512")
+      .update(order_id + status_code + gross_amount + SERVER_KEY)
+      .digest("hex");
 
-    // const decode = btoa(auth);
-    // res.send(decode);
-    console.log("Notification Payment", req.headers);
-    console.log("Body Payment", req.body);
+    if (createSignature === signature_key) {
+      console.log("PAYMENT WITH ORDER ID: " + order_id + " SUCCESS");
+      res.end();
+    }
+
+    console.log("ORDER ID: " + order_id + "UNAUTHORIZE");
+    res.end();
   } catch (err: any) {
     console.log(err);
     res.end();
