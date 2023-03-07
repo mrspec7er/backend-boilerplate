@@ -42,6 +42,14 @@ export const createUser = async (
   res: express.Response
 ) => {
   const { name, email, password, role } = req.body;
+
+  if (!email || !password) {
+    return res.status(500).send({
+      status: false,
+      message: "Username and password required",
+    });
+  }
+
   const encryptedPassword = await bcrypt.hash(password, 11);
 
   try {
