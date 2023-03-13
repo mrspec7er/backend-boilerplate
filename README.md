@@ -23,8 +23,8 @@ This boilerplate cover basic function for backend service like CRUD, Send Email,
 npm init -y 
 ```
 ``` 
-npm i express bcrypt cors dotenv jsonwebtoken morgan node-schedule `
-``
+npm i express bcrypt cors dotenv jsonwebtoken morgan node-schedule 
+```
 ``` 
 npm i -D typescript @types/express @types/node @types/jsonwebtoken @types/bcrypt @types/cors @types/morgan @types/multer @types/node-schedule @types/nodemailer nodemon ts-node 
 ```
