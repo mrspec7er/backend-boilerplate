@@ -19,32 +19,54 @@ This boilerplate cover basic function for backend service like CRUD, Send Email,
 ## Setup
 
 ### Setup Base Project: 
-``` npm init -y ```
-``` npm i express bcrypt cors dotenv jsonwebtoken morgan node-schedule ```
-``` npm i -D typescript @types/express @types/node @types/jsonwebtoken @types/bcrypt @types/cors @types/morgan @types/multer @types/node-schedule @types/nodemailer nodemon ts-node ```
-``` npx tsc --init ```
+``` 
+npm init -y 
+```
+``` 
+npm i express bcrypt cors dotenv jsonwebtoken morgan node-schedule `
+``
+``` 
+npm i -D typescript @types/express @types/node @types/jsonwebtoken @types/bcrypt @types/cors @types/morgan @types/multer @types/node-schedule @types/nodemailer nodemon ts-node 
+```
+``` 
+npx tsc --init
+```
 * create file nodemon.json and automation script in package.json
 * create and setup file index.ts
 
 ### Setup Database:
-``` npm install prisma --save-dev ```
-``` npx prisma init --datasource-provider postgresql ```
+``` 
+npm install prisma --save-dev 
+```
+``` 
+npx prisma init --datasource-provider postgresql 
+```
 * create database model
-``` npx prisma migrate dev --name init ```
-``` npx prisma generate ```
+``` 
+npx prisma migrate dev --name init
+```
+```
+npx prisma generate
+```
 
 ### Setup file input:
-``` npm i multer ```
+``` 
+npm i multer 
+```
 * create input handler middleware
 * apply middleware in endpoint routes
 
 ### Setup email services
-``` npm i nodemailer ```
+``` 
+npm i nodemailer 
+```
 * create smtp server
 * create email service function
 
 ### Setup payment services
-``` npm i crypto midtrans-client ```
+``` 
+npm i crypto midtrans-client 
+```
 * create midtrans account
 * get server and client key
 * create endpoint for create new transaction
